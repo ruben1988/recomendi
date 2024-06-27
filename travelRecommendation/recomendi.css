@@ -91,9 +91,10 @@ nav {
   align-items: center;
   justify-content: space-around;
   flex-direction: column;
+  color: white;
 }
   #result img{
-    width: 200px;
-    height: 100px;
+    width: 400px;
+    height: 300px;
   }
   

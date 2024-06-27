@@ -4,28 +4,36 @@ function searchCondition() {
     resultDiv.innerHTML = '';
 
     fetch('travel_recommendation_api.json')
-      .then(response => response.json())
-      .then(data => {
-        const condition = data.countries.find(item => item.name.toLowerCase() === input);
+        .then(response => response.json())
+        .then(data => {
+            const country = data.countries.find(item => item.name.toLowerCase() === input);
 
-        if (condition) {
-        //   const namecomp = condition.name.join(', ');
-        //   const description = condition.description.join(', ');
-        //   const treatment = condition.treatment;
+            if (country) {
+                resultDiv.innerHTML += `<h2>${country.name}</h2>`;
 
-          resultDiv.innerHTML += `<h2>${condition.name}</h2>`;
-          resultDiv.innerHTML += `<img src="${condition.imageUrl}" alt="hjh">`;
-
-          resultDiv.innerHTML += `<p><strong>Name:</strong> ${condition.name}</p>`;
-          resultDiv.innerHTML += `<p><strong>Prevention:</strong> ${condition.description}</p>`;
-        } else {
-          resultDiv.innerHTML = 'Condition not found.';
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        resultDiv.innerHTML = 'An error occurred while fetching data.';
-      });
+                country.cities.forEach(city => {
+                    resultDiv.innerHTML += `<div>`;
+                    resultDiv.innerHTML += `<img src="${city.imageUrl}" alt="${city.name}" style="width:200px;height:auto;">`;
+                    resultDiv.innerHTML += `<p><strong>City:</strong> ${city.name}</p>`;
+                    resultDiv.innerHTML += `<p><strong>Description:</strong> ${city.description}</p>`;
+                    resultDiv.innerHTML += `</div>`;
+                });
+            } else {
+                resultDiv.innerHTML = 'Country not found.';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            resultDiv.innerHTML = 'An error occurred while fetching data.';
+        });
 }
 
 btnSearch.addEventListener('click', searchCondition);
+
+
+function clearResult() {
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = '';
+}
+
+document.getElementById('btnClear').addEventListener('click', clearResult);
